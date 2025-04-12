@@ -145,7 +145,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Contact
 
-For questions or support, please reach out to: your-email@example.com
+For questions or support, please reach out to: navalbihani15@gmail.com
 
 ---
 
