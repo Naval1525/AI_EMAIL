@@ -108,7 +108,6 @@ export const getEmails = async (req, res) => {
           subject: getHeader('Subject'),
           date: getHeader('Date'),
           snippet: fullMessage.data.snippet,
-          message:fullMessage.data,
         };
       })
     );
