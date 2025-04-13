@@ -6,10 +6,13 @@ const DashboardContext = createContext();
 export const DashboardProvider = ({ children }) => {
   const [selectedEmail, setSelectedEmail] = useState(null);
   const [showReply, setShowReply] = useState(false);
+  const [showAIReply, setShowAIReply] = useState(false);
+  const [showReplyOptions, setShowReplyOptions] = useState(false);
   const [emails, setEmails] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [sendingReply, setSendingReply] = useState(false);
 
   // Get API URL from environment variables
   const API_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
@@ -64,6 +67,7 @@ export const DashboardProvider = ({ children }) => {
       // Map backend data to match the frontend structure
       const mappedEmails = data.map((email) => ({
         id: email.messageId,
+        threadId: email.threadId,
         from:
           email.from?.split("<")[0]?.trim() || email.from || "Unknown Sender",
         to: email.to || "me",
@@ -73,7 +77,6 @@ export const DashboardProvider = ({ children }) => {
         date: formatDate(email.date || new Date()),
         time: formatTime(email.date || new Date()),
         read: false,
-        
       }));
 
       setEmails(mappedEmails);
@@ -121,65 +124,82 @@ export const DashboardProvider = ({ children }) => {
   const closeEmailDetail = () => {
     setSelectedEmail(null);
     setShowReply(false);
+    setShowAIReply(false);
+    setShowReplyOptions(false);
   };
 
-  // Open reply form
+  // Open reply options
+  const openReplyOptions = () => {
+    setShowReplyOptions(true);
+  };
+
+  // Open manual reply form
   const openReply = () => {
+    setShowReplyOptions(false);
     setShowReply(true);
   };
 
-  // Close reply form
-  const closeReply = () => {
-    setShowReply(false);
+  // Open AI reply form
+  const openAIReply = () => {
+    setShowReplyOptions(false);
+    setShowAIReply(true);
   };
 
-  // Handle sending a reply
+  // Close all reply forms
+  const closeReply = () => {
+    setShowReply(false);
+    setShowAIReply(false);
+    setShowReplyOptions(false);
+  };
+
+  // Handle sending a reply (works for both regular and AI replies)
   const handleSendReply = async (replyData) => {
     try {
+      setSendingReply(true);
+      
+      // Ensure we have all the required fields for the backend
+      const completeReplyData = {
+        to: replyData.to,
+        subject: replyData.subject,
+        body: replyData.body,
+        messageId: selectedEmail.id,
+        threadId: selectedEmail.threadId || null
+      };
+
+      console.log("Sending reply with data:", completeReplyData);
+
       const response = await fetch(`${API_URL}/api/gmail/reply`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify({
-          messageId: selectedEmail.id,
-          ...replyData,
-        }),
+        body: JSON.stringify(completeReplyData),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to send reply");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to send reply");
       }
 
+      const result = await response.json();
+      console.log("Reply sent successfully:", result);
+      
       alert("Reply sent successfully!");
+      
+      // Close reply forms
       setShowReply(false);
+      setShowAIReply(false);
+      
+      // Refresh emails to show the sent reply in the thread
+      handleRefresh();
+      
     } catch (err) {
       console.error("Error sending reply:", err);
       alert(`Failed to send reply: ${err.message}`);
+    } finally {
+      setSendingReply(false);
     }
-  };
-
-  // Handle toggling star
-  const handleToggleStar = (e, email) => {
-    e.stopPropagation();
-    // Update local state
-    setEmails(
-      emails.map((e) =>
-        e.id === email.id ? { ...e, starred: !e.starred } : e
-      )
-    );
-    
-    // Update the selected email if it's the one being starred
-    if (selectedEmail && selectedEmail.id === email.id) {
-      setSelectedEmail({
-        ...selectedEmail,
-        starred: !selectedEmail.starred,
-      });
-    }
-    
-    // You could add an API call here to update the starred status on the backend
-    console.log(`Toggled star for email ${email.id}`);
   };
 
   // Value to be provided by the context
@@ -190,13 +210,17 @@ export const DashboardProvider = ({ children }) => {
     error,
     refreshing,
     showReply,
+    showAIReply,
+    showReplyOptions,
+    sendingReply,
     handleRefresh,
     handleEmailClick,
     closeEmailDetail,
+    openReplyOptions,
     openReply,
+    openAIReply,
     closeReply,
     handleSendReply,
-    handleToggleStar,
   };
 
   return (

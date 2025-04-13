@@ -1,10 +1,9 @@
 import React from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider } from "./context/authContext";
 import ProtectedRoutes from "./routes/ProtectedRoutes.jsx";
 import Navbar from "./components/Navbar";
 import Compose from "./pages/Compose";
-import Reply from "./pages/Reply";
 import DashBoard from "./pages/DashBoard";
 import Landing from "./components/Landing";
 import Footer from "./components/Footer";
@@ -23,7 +22,6 @@ const App = () => {
             <Route element={<ProtectedRoutes />}>
               <Route path="/dashboard" element={<DashBoard />} />
               <Route path="/compose" element={<Compose />} />
-              <Route path="/reply" element={<Reply />} />
             </Route>
             
             {/* Catch all route - redirect to landing page */}

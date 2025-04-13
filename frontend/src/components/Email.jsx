@@ -2,8 +2,6 @@ import React from "react";
 import { Mail, Reply, X } from "lucide-react";
 
 const Email = ({ email, onReply, onClose }) => {
-
-  
   if (!email) return null;
 
   return (
@@ -35,7 +33,6 @@ const Email = ({ email, onReply, onClose }) => {
         </pre>
       </div>
 
-      
       <div className="border-t border-gray-700 pt-6 mt-4">
         <button
           onClick={onReply}

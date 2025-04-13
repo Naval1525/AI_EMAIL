@@ -1,7 +1,9 @@
 import React from "react";
-import { Paperclip, AlertCircle, Mail, RefreshCw } from "lucide-react";
-import ReplyComponent from "./Reply";
+import { AlertCircle, Mail, RefreshCw } from "lucide-react";
 import Email from "../components/Email";
+import Reply from "../components/Reply";
+import AIReply from "../components/AIReply";
+import ReplyOptions from "../components/ReplyOptions";
 import { DashboardProvider, useDashboard } from "../context/dashboardContext";
 
 // EmailItem Component
@@ -100,9 +102,13 @@ const DashboardContent = () => {
     selectedEmail,
     refreshing,
     showReply,
+    showAIReply,
+    showReplyOptions,
     handleRefresh,
     closeEmailDetail,
+    openReplyOptions,
     openReply,
+    openAIReply,
     closeReply,
     handleSendReply,
   } = useDashboard();
@@ -144,7 +150,7 @@ const DashboardContent = () => {
             <div className="w-full md:w-1/2 lg:w-3/5 md:ml-4">
               <Email
                 email={selectedEmail}
-                onReply={openReply}
+                onReply={openReplyOptions}
                 onClose={closeEmailDetail}
               />
             </div>
@@ -152,9 +158,26 @@ const DashboardContent = () => {
         </div>
       </div>
 
-      {/* Reply popup */}
+      {/* Reply popups */}
+      {showReplyOptions && selectedEmail && (
+        <ReplyOptions
+          email={selectedEmail}
+          onClose={closeReply}
+          onReplyOwn={openReply}
+          onReplyAI={openAIReply}
+        />
+      )}
+      
       {showReply && selectedEmail && (
-        <ReplyComponent
+        <Reply
+          email={selectedEmail}
+          onClose={closeReply}
+          onSend={handleSendReply}
+        />
+      )}
+      
+      {showAIReply && selectedEmail && (
+        <AIReply
           email={selectedEmail}
           onClose={closeReply}
           onSend={handleSendReply}
