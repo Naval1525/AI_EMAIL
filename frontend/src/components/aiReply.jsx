@@ -3,8 +3,10 @@ import { X, Send, Sparkles, Loader } from 'lucide-react';
 import { useDashboard } from '../context/dashboardContext';
 
 const AIReply = ({ email, onClose, onSend }) => {
+  // Initialize state with email data
   const [replyContent, setReplyContent] = useState('');
   const [subject, setSubject] = useState(`Re: ${email?.subject || ''}`);
+  const [toAddress, setToAddress] = useState(email?.from || '');
   const [isGenerating, setIsGenerating] = useState(false);
   const { sendingReply } = useDashboard();
   
@@ -25,7 +27,7 @@ const AIReply = ({ email, onClose, onSend }) => {
           message: `Please generate a professional reply to this email: 
           From: ${email.from}
           Subject: ${email.subject}
-          Message: ${email.body || email.preview}`
+          Message: ${email.body || email.preview || email.snippet}`
         })
       });
       
@@ -49,10 +51,14 @@ const AIReply = ({ email, onClose, onSend }) => {
       return;
     }
     
+    // Create reply data with all required fields
     const replyData = {
-      to: email?.from,
+      to: toAddress,
       subject,
-      body: replyContent
+      body: replyContent,
+      // Include necessary IDs for threading
+      messageId: email?.id,
+      threadId: email?.threadId
     };
     
     if (onSend) {
@@ -83,14 +89,15 @@ const AIReply = ({ email, onClose, onSend }) => {
         
         {/* Email form */}
         <div className="p-6">
-          {/* To field */}
+          {/* To field - make editable */}
           <div className="mb-4">
             <label className="block text-gray-400 mb-1">To</label>
             <input
               type="text"
-              value={email?.from || ''}
-              readOnly
+              value={toAddress}
+              onChange={(e) => setToAddress(e.target.value)}
               className="w-full p-2 rounded bg-gray-700 text-gray-100 border border-gray-600 focus:border-blue-500"
+              disabled={isGenerating || sendingReply}
             />
           </div>
           

@@ -3,7 +3,40 @@ import React, { createContext, useState, useContext, useEffect } from "react";
 // Create the context
 const DashboardContext = createContext();
 
+// Helper functions for date formatting
+const formatDate = (dateString) => {
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  } catch (err) {
+    return "Unknown date";
+  }
+};
+
+const formatTime = (dateString) => {
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+  } catch (err) {
+    return "";
+  }
+};
+
+// Helper function to extract email from string like "Name <email@domain.com>"
+const extractEmail = (text) => {
+  if (!text) return null;
+  
+  const match = text.match(/<([^>]+)>/);
+  if (match && match[1]) return match[1];
+  
+  // If no match with angle brackets, check if the text itself is an email
+  if (text.includes('@')) return text;
+  
+  return null;
+};
+
 export const DashboardProvider = ({ children }) => {
+  // State variables
   const [selectedEmail, setSelectedEmail] = useState(null);
   const [showReply, setShowReply] = useState(false);
   const [showAIReply, setShowAIReply] = useState(false);
@@ -14,34 +47,8 @@ export const DashboardProvider = ({ children }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [sendingReply, setSendingReply] = useState(false);
 
-  // Get API URL from environment variables
+  // Config
   const API_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
-
-  // Helper function to format date
-  const formatDate = (dateString) => {
-    try {
-      const date = new Date(dateString);
-      return date.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-      });
-    } catch (err) {
-      return "Unknown date";
-    }
-  };
-
-  // Helper function to format time
-  const formatTime = (dateString) => {
-    try {
-      const date = new Date(dateString);
-      return date.toLocaleTimeString("en-US", {
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-    } catch (err) {
-      return "";
-    }
-  };
 
   // Fetch emails from backend
   const fetchEmails = async () => {
@@ -63,13 +70,12 @@ export const DashboardProvider = ({ children }) => {
       }
 
       const data = await response.json();
-
-      // Map backend data to match the frontend structure
       const mappedEmails = data.map((email) => ({
         id: email.messageId,
         threadId: email.threadId,
-        from:
-          email.from?.split("<")[0]?.trim() || email.from || "Unknown Sender",
+        from: email.from || "Unknown Sender",
+        fromName: email.from?.split("<")[0]?.trim() || "Unknown Sender",
+        fromEmail: extractEmail(email.from),
         to: email.to || "me",
         subject: email.subject || "(No Subject)",
         body: email.snippet || "",
@@ -94,33 +100,26 @@ export const DashboardProvider = ({ children }) => {
     fetchEmails();
   }, [API_URL]);
 
-  // Handle refresh button click
+  // Email handlers
   const handleRefresh = () => {
     setRefreshing(true);
     fetchEmails();
   };
 
-  // Handle email click
   const handleEmailClick = async (email) => {
     try {
-      // Mark email as read on the backend (if we implement this endpoint later)
       if (!email.read) {
         // Update local state first for better UX
-        setEmails(
-          emails.map((e) => (e.id === email.id ? { ...e, read: true } : e))
-        );
-
-        // This endpoint doesn't exist yet, but we could implement it later
+        setEmails(emails.map((e) => (e.id === email.id ? { ...e, read: true } : e)));
         console.log(`Would mark email ${email.id} as read`);
       }
-
       setSelectedEmail(email);
     } catch (err) {
       console.error("Error marking email as read:", err);
     }
   };
 
-  // Close email detail view
+  // UI control handlers
   const closeEmailDetail = () => {
     setSelectedEmail(null);
     setShowReply(false);
@@ -128,42 +127,59 @@ export const DashboardProvider = ({ children }) => {
     setShowReplyOptions(false);
   };
 
-  // Open reply options
   const openReplyOptions = () => {
     setShowReplyOptions(true);
   };
 
-  // Open manual reply form
   const openReply = () => {
     setShowReplyOptions(false);
     setShowReply(true);
   };
 
-  // Open AI reply form
   const openAIReply = () => {
     setShowReplyOptions(false);
     setShowAIReply(true);
   };
 
-  // Close all reply forms
   const closeReply = () => {
     setShowReply(false);
     setShowAIReply(false);
     setShowReplyOptions(false);
   };
 
-  // Handle sending a reply (works for both regular and AI replies)
+  // Handle sending the reply
   const handleSendReply = async (replyData) => {
     try {
       setSendingReply(true);
+
+      // Always prioritize using the email extracted from the original sender
+      let toEmail = selectedEmail.fromEmail;
+      let toName = selectedEmail.fromName || "Recipient";
       
-      // Ensure we have all the required fields for the backend
+      // Only if we don't have the sender's email, try to use what the user provided
+      if (!toEmail) {
+        // Try to extract from the user-provided "to" field
+        toEmail = extractEmail(replyData.to);
+        
+        // If still no email, use the whole "to" field as the name
+        if (!toEmail) {
+          toName = replyData.to.trim();
+          // Don't create fake emails, throw an error instead
+          throw new Error("Could not determine recipient's email address. Please include a valid email address.");
+        }
+      }
+      
+      // Format the address with name and email
+      const toAddress = `${toName} <${toEmail}>`;
+      
+      console.log("Sending reply to:", toAddress);
+
       const completeReplyData = {
-        to: replyData.to,
+        to: toAddress,
         subject: replyData.subject,
         body: replyData.body,
         messageId: selectedEmail.id,
-        threadId: selectedEmail.threadId || null
+        threadId: selectedEmail.threadId || null,
       };
 
       console.log("Sending reply with data:", completeReplyData);
@@ -184,16 +200,13 @@ export const DashboardProvider = ({ children }) => {
 
       const result = await response.json();
       console.log("Reply sent successfully:", result);
-      
+
       alert("Reply sent successfully!");
-      
-      // Close reply forms
+
+      // Clean up UI state
       setShowReply(false);
       setShowAIReply(false);
-      
-      // Refresh emails to show the sent reply in the thread
       handleRefresh();
-      
     } catch (err) {
       console.error("Error sending reply:", err);
       alert(`Failed to send reply: ${err.message}`);
@@ -202,7 +215,7 @@ export const DashboardProvider = ({ children }) => {
     }
   };
 
-  // Value to be provided by the context
+  // Context value
   const value = {
     emails,
     selectedEmail,

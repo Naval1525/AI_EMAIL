@@ -3,8 +3,10 @@ import { X, Send, Loader } from 'lucide-react';
 import { useDashboard } from '../context/dashboardContext';
 
 const Reply = ({ email, onClose, onSend }) => {
+  // Initialize state with the email data
   const [replyContent, setReplyContent] = useState('');
   const [subject, setSubject] = useState(`Re: ${email?.subject || ''}`);
+  const [toAddress, setToAddress] = useState(email?.from || '');
   const { sendingReply } = useDashboard();
   
   // Handle sending the reply
@@ -13,12 +15,17 @@ const Reply = ({ email, onClose, onSend }) => {
       return;
     }
     
+    // Create the reply data object with all necessary fields
     const replyData = {
-      to: email?.from,
+      to: toAddress,
       subject,
-      body: replyContent
+      body: replyContent,
+      // Include necessary IDs for threading
+      messageId: email?.id, 
+      threadId: email?.threadId
     };
     
+    // Call the onSend handler with the complete data
     if (onSend) {
       onSend(replyData);
     } else {
@@ -44,14 +51,15 @@ const Reply = ({ email, onClose, onSend }) => {
         
         {/* Email form */}
         <div className="p-6">
-          {/* To field */}
+          {/* To field - make editable in case user needs to modify recipient */}
           <div className="mb-4">
             <label className="block text-gray-400 mb-1">To</label>
             <input
               type="text"
-              value={email?.from || ''}
-              readOnly
+              value={toAddress}
+              onChange={(e) => setToAddress(e.target.value)}
               className="w-full p-2 rounded bg-gray-700 text-gray-100 border border-gray-600 focus:border-blue-500"
+              disabled={sendingReply}
             />
           </div>
           

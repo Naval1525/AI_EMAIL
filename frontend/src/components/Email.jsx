@@ -4,6 +4,9 @@ import { Mail, Reply, X } from "lucide-react";
 const Email = ({ email, onReply, onClose }) => {
   if (!email) return null;
 
+  // Extract and format email body - get content from snippet or body field
+  const emailContent = email.body || email.snippet || "";
+
   return (
     <div className="bg-gray-800 rounded-lg shadow-lg p-6">
       <div className="flex justify-between items-center mb-6">
@@ -28,9 +31,9 @@ const Email = ({ email, onReply, onClose }) => {
       </div>
 
       <div className="border-t border-gray-700 py-6">
-        <pre className="whitespace-pre-wrap font-sans text-gray-300">
-          {email.body}
-        </pre>
+        <div className="whitespace-pre-wrap font-sans text-gray-300">
+          {emailContent}
+        </div>
       </div>
 
       <div className="border-t border-gray-700 pt-6 mt-4">
