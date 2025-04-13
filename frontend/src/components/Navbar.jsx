@@ -8,6 +8,7 @@ const Navbar = () => {
   const { user, isAuthenticated, login, logout } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -30,12 +31,12 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-gray-900 text-white py-4 px-6 flex justify-between items-center shadow-lg">
+    <nav className="bg-black text-white py-4 px-6 flex justify-between items-center shadow-lg">
       {/* Company Logo/Name */}
       <div className="flex items-center">
         <Link to="/" className="flex items-center">
-          <span className="text-xl font-bold text-blue-400">AI</span>
-          <span className="text-xl font-bold ml-1">EMAIL</span>
+          <span className="text-2xl font-bold text-white">AI</span>
+          <span className="text-2xl font-bold ml-1 text-blue-400">EMAIL</span>
         </Link>
       </div>
 
@@ -61,7 +62,7 @@ const Navbar = () => {
         {/* User Profile Icon */}
         <div className="relative" ref={dropdownRef}>
           <div
-            className="ml-6 cursor-pointer p-2 rounded-full hover:bg-gray-700 transition-colors flex items-center"
+            className="ml-6 cursor-pointer p-2 rounded-full hover:bg-gray-800 transition-colors flex items-center"
             onClick={handleUserIconClick}
           >
             {isAuthenticated && user?.avatar ? (
@@ -77,14 +78,14 @@ const Navbar = () => {
 
           {/* Dropdown Menu */}
           {isAuthenticated && dropdownOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-10">
-              <div className="px-4 py-3 border-b border-gray-700">
-                <p className="text-sm font-medium">{user.name}</p>
-                <p className="text-xs text-gray-400 truncate">{user.email}</p>
+            <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+              <div className="px-4 py-3 border-b border-gray-200">
+                <p className="text-sm text-black font-medium">{user.name}</p>
+                <p className="text-xs text-gray-600 truncate">{user.email}</p>
               </div>
               <button
                 onClick={logout}
-                className="flex items-center w-full px-4 py-2 text-sm text-white hover:bg-gray-700"
+                className="flex items-center w-full px-4 py-2 text-sm text-black hover:bg-gray-100"
               >
                 <LogOut size={16} className="mr-2" />
                 Sign out
@@ -102,7 +103,7 @@ const NavItem = ({ icon, label, to, active }) => {
     <Link
       to={to}
       className={`flex items-center cursor-pointer transition-colors ${
-        active ? "text-blue-400" : "text-white hover:text-blue-400"
+        active ? "text-blue-400 font-medium" : "text-white hover:text-blue-400"
       }`}
     >
       <div className="mr-1">{icon}</div>
