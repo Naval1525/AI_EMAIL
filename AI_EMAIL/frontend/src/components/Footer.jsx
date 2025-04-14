@@ -117,10 +117,9 @@ import {
   Mail,
   Phone,
   MapPin,
-  Facebook,
-  Twitter,
   Instagram,
   Linkedin,
+  Youtube,
 } from 'lucide-react';
 
 const Footer = () => {
@@ -142,16 +141,16 @@ const Footer = () => {
               Delivering innovative solutions that empower users and businesses alike.
             </p>
             <div className="flex space-x-4">
-              <a href="#" aria-label="Facebook" className="p-2 rounded-full bg-gray-800 hover:bg-blue-600 transition-colors">
-                <Facebook size={20} />
-              </a>
-              <a href="#" aria-label="Twitter" className="p-2 rounded-full bg-gray-800 hover:bg-sky-400 transition-colors">
-                <Twitter size={20} />
-              </a>
-              <a href="#" aria-label="Instagram" className="p-2 rounded-full bg-gray-800 hover:bg-pink-500 transition-colors">
+              <a href="https://www.instagram.com/codeandcringe?igsh=cmtpbXlkeXlyaDl3&utm_source=qr" aria-label="Instagram" className="p-2 rounded-full bg-gray-800 hover:bg-blue-600 transition-colors">
                 <Instagram size={20} />
               </a>
-              <a href="#" aria-label="LinkedIn" className="p-2 rounded-full bg-gray-800 hover:bg-blue-500 transition-colors">
+              <a href="https://www.youtube.com/@CodingCringe" aria-label="Youtube" className="p-2 rounded-full bg-gray-800 hover:bg-sky-400 transition-colors">
+                <Youtube size={20} />
+              </a>
+              <a href="https://www.linkedin.com/in/adityamaurya28/" aria-label="Linkdin" className="p-2 rounded-full bg-gray-800 hover:bg-pink-500 transition-colors">
+                <Linkedin size={20} />
+              </a>
+              <a href="https://www.linkedin.com/in/navalbihani15" aria-label="LinkedIn" className="p-2 rounded-full bg-gray-800 hover:bg-blue-500 transition-colors">
                 <Linkedin size={20} />
               </a>
             </div>
@@ -174,15 +173,15 @@ const Footer = () => {
             <ul className="space-y-4 text-gray-400">
               <li className="flex items-center space-x-2">
                 <Mail size={18} />
-                <span>support@aiemail.com</span>
+                <span>codingxcringe@gmail.com</span>
               </li>
               <li className="flex items-center space-x-2">
                 <Phone size={18} />
-                <span>+1 (800) 123-4567</span>
+                <span>+91 8602019492</span>
               </li>
               <li className="flex items-center space-x-2">
                 <MapPin size={18} />
-                <span>123 AI Street, Innovation City</span>
+                <span>Bennett University</span>
               </li>
             </ul>
           </div>

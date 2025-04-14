@@ -115,7 +115,7 @@
 // export default Navbar;
 import React, { useState, useRef, useEffect } from "react";
 import { User, LayoutDashboard, PenSquare, LogOut } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation,useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
@@ -123,6 +123,11 @@ const Navbar = () => {
   const { user, isAuthenticated, login, logout } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const navigate = useNavigate();
+
+  const landing = () => {
+    navigate('/');
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -150,7 +155,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo on left */}
-          <div className="flex-shrink-0 group">
+          <div onClick={landing} className="flex-shrink-0 group">
             <span className="text-2xl font-bold tracking-tight">
               <span className="text-black transition-all duration-300 group-hover:text-pink-300">AI</span>
               <span className="mx-1 text-black opacity-60">×</span>
