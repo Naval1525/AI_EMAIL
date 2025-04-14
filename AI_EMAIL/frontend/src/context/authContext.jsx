@@ -89,7 +89,7 @@ export const AuthProvider = ({ children }) => {
           setUser(JSON.parse(cachedUserData));
           setError('Working in offline mode. Some features may be limited.');
         } catch (e) {
-          localStorage.removeItem('userData');
+          localStorage.removeItem('userData',e);
         }
       } else {
         localStorage.removeItem('authToken');
