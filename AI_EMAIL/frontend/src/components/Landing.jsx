@@ -1412,24 +1412,16 @@ const ContactUs = () => {
               {
                 icon: <Mail size={20} className="text-gray-800" />,
                 title: "Email",
-                details: ["support@ai-gmail-assistant.com", "info@ai-gmail-assistant.com"],
+                details: ["codingxcringe@gmail.com"],
                 bg: "bg-blue-100",
                 index: 0,
               },
-              {
-                icon: <Phone size={20} className="text-gray-800" />,
-                title: "Phone",
-                details: ["+1 (555) 123-4567", "+1 (555) 987-6543"],
-                bg: "bg-indigo-100",
-                index: 1,
-              },
+
               {
                 icon: <MapPin size={20} className="text-gray-800" />,
                 title: "Location",
                 details: [
-                  "123 Tech Avenue",
-                  "Suite 400",
-                  "San Francisco, CA 94105",
+                  "Bennett University"
                 ],
                 bg: "bg-purple-100",
                 index: 2,

@@ -112,7 +112,7 @@
 // };
 
 // export default Footer;
-import React from 'react';
+import React from "react";
 import {
   Mail,
   Phone,
@@ -120,7 +120,7 @@ import {
   Instagram,
   Linkedin,
   Youtube,
-} from 'lucide-react';
+} from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -130,27 +130,45 @@ const Footer = () => {
       {/* Main Footer */}
       <div className="container mx-auto px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-
           {/* Company Info */}
           <div>
             <div className="flex items-center mb-4">
               <span className="text-2xl font-bold text-white">AI</span>
-              <span className="text-2xl font-bold ml-1 text-blue-400">EMAIL</span>
+              <span className="text-2xl font-bold ml-1 text-blue-400">
+                EMAIL
+              </span>
             </div>
             <p className="text-gray-400 mb-6">
-              Delivering innovative solutions that empower users and businesses alike.
+              Delivering innovative solutions that empower users and businesses
+              alike.
             </p>
             <div className="flex space-x-4">
-              <a href="https://www.instagram.com/codeandcringe?igsh=cmtpbXlkeXlyaDl3&utm_source=qr" aria-label="Instagram" className="p-2 rounded-full bg-gray-800 hover:bg-blue-600 transition-colors">
+              <a
+                href="https://www.instagram.com/codeandcringe?igsh=cmtpbXlkeXlyaDl3&utm_source=qr"
+                aria-label="Instagram"
+                className="p-2 rounded-full bg-gray-800 hover:bg-blue-600 transition-colors"
+              >
                 <Instagram size={20} />
               </a>
-              <a href="https://www.youtube.com/@CodingCringe" aria-label="Youtube" className="p-2 rounded-full bg-gray-800 hover:bg-sky-400 transition-colors">
+              <a
+                href="https://www.youtube.com/@CodingCringe"
+                aria-label="Youtube"
+                className="p-2 rounded-full bg-gray-800 hover:bg-sky-400 transition-colors"
+              >
                 <Youtube size={20} />
               </a>
-              <a href="https://www.linkedin.com/in/adityamaurya28/" aria-label="Linkdin" className="p-2 rounded-full bg-gray-800 hover:bg-pink-500 transition-colors">
+              <a
+                href="https://www.linkedin.com/in/adityamaurya28/"
+                aria-label="Linkdin"
+                className="p-2 rounded-full bg-gray-800 hover:bg-pink-500 transition-colors"
+              >
                 <Linkedin size={20} />
               </a>
-              <a href="https://www.linkedin.com/in/navalbihani15" aria-label="LinkedIn" className="p-2 rounded-full bg-gray-800 hover:bg-blue-500 transition-colors">
+              <a
+                href="https://www.linkedin.com/in/navalbihani15"
+                aria-label="LinkedIn"
+                className="p-2 rounded-full bg-gray-800 hover:bg-blue-500 transition-colors"
+              >
                 <Linkedin size={20} />
               </a>
             </div>
@@ -160,10 +178,26 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-3 text-gray-400">
-              <li><a href="#" className="hover:text-white transition-colors">Home</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Features</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Pricing</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
+              <li>
+                <a href="#" className="hover:text-white transition-colors">
+                  Home
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-white transition-colors">
+                  Features
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-white transition-colors">
+                  Pricing
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-white transition-colors">
+                  Contact
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -175,10 +209,7 @@ const Footer = () => {
                 <Mail size={18} />
                 <span>codingxcringe@gmail.com</span>
               </li>
-              <li className="flex items-center space-x-2">
-                <Phone size={18} />
-                <span>+91 8602019492</span>
-              </li>
+
               <li className="flex items-center space-x-2">
                 <MapPin size={18} />
                 <span>Bennett University</span>
@@ -189,7 +220,9 @@ const Footer = () => {
           {/* Newsletter */}
           <div>
             <h4 className="text-lg font-semibold mb-4">Newsletter</h4>
-            <p className="text-gray-400 mb-4">Get the latest updates and offers.</p>
+            <p className="text-gray-400 mb-4">
+              Get the latest updates and offers.
+            </p>
             <form className="flex flex-col sm:flex-row items-center">
               <input
                 type="email"
