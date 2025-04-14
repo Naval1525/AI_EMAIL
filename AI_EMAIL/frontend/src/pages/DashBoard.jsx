@@ -204,7 +204,7 @@ import { AlertCircle, Mail, RefreshCw, X, ArrowLeft, Send } from "lucide-react";
 import Email from "../components/Email";
 import Reply from "../components/Reply";
 import AIReply from "../components/aiReply";
-import ReplyOptions from "../components/ReplyOptions";
+import ReplyOptions from "../components/ReplyOpt";
 import { DashboardProvider, useDashboard } from "../context/dashboardContext";
 
 // EmailItem Components
