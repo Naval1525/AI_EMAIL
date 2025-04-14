@@ -203,7 +203,7 @@ import React from "react";
 import { AlertCircle, Mail, RefreshCw, X, ArrowLeft, Send } from "lucide-react";
 import Email from "../components/Email";
 import Reply from "../components/Reply";
-import AIReply from "../components/AiReply";
+import AIReply from "../components/aiReply";
 import ReplyOptions from "../components/ReplyOptions";
 import { DashboardProvider, useDashboard } from "../context/dashboardContext";
 
