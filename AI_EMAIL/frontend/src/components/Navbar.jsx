@@ -1,7 +1,7 @@
 // import React, { useState, useRef, useEffect } from "react";
 // import { User, LayoutDashboard, PenSquare, LogOut } from "lucide-react";
 // import { Link, useLocation } from "react-router-dom";
-// import { useAuth } from "../context/AuthContext";
+// import { useAuth } from "../context/authContext";
 
 // const Navbar = () => {
 //   const location = useLocation();
