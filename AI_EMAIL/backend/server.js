@@ -27,7 +27,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://ai-email-frontend-taupe.vercel.app/",
+      "https://ai-email-frontend-taupe.vercel.app",
     ],
     credentials: true,
   })
