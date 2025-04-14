@@ -207,7 +207,7 @@ import AIReply from "../components/aiReply";
 import ReplyOptions from "../components/ReplyOptions";
 import { DashboardProvider, useDashboard } from "../context/dashboardContext";
 
-// EmailItem Component
+// EmailItem Components
 const EmailItem = ({ email, onClick }) => {
   return (
     <div
