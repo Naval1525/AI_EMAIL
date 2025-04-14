@@ -56,7 +56,7 @@ export const googleCallback = async (req, res) => {
       );
 
       console.log('✅ Redirecting with token:', token);
-      res.redirect(`http://localhost:5173?token=${token}`);
+      res.redirect(`https://ai-email-frontend-taupe.vercel.app?token=${token}`);
     } catch (error) {
       console.error('OAuth callback error:', error.message);
       res.status(500).send('Internal Server Error');
