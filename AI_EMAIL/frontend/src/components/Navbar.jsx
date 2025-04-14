@@ -116,7 +116,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { User, LayoutDashboard, PenSquare, LogOut } from "lucide-react";
 import { Link, useLocation,useNavigate } from "react-router-dom";
-import { useAuth } from "../context/authContext";
+import { useAuth } from "../context/auth.jsx";
 
 const Navbar = () => {
   const location = useLocation();
